@@ -40,3 +40,9 @@ El [notebook de fundamentos](notebooks/trabajo/4_problema_hipotesis.ipynb) defin
 El [notebook de transformación](notebooks/trabajo/7_tipos_columnas.ipynb) carga `data/processed/telco_step1.csv`, elimina `customerID`, convierte `SeniorCitizen` a `No/Yes` y las variables categóricas a `category`. Agrega `ingreso_estimado` y `diferencia_facturacion` y exporta `data/processed/telco_step2.csv`, con 7.043 clientes y 22 columnas.
 
 Se ejecuta completo en local o en Colab; en Colab la entrada se obtiene desde GitHub y la salida queda en el panel Archivos. Como CSV no conserva los tipos categóricos, el notebook incluye el esquema `tipos_esperados` y verifica su recuperación con `pd.read_csv(ruta, dtype=tipos_esperados)`.
+
+## Estilo común de gráficos (tarea 16)
+
+El [notebook de estilo y exportación](notebooks/trabajo/16_estilo_graficos.ipynb) contiene una celda lista para copiar a los notebooks de visualización. Define paleta, fuentes y tamaños, los colores de `Churn` (`No` azul, `Yes` naranja) y `guardar_figura(fig, nombre)`, que exporta PNG a 300 dpi en `reports/figures/`.
+
+Incluye un ejemplo de proporciones de churn exportado a `reports/figures/16_ejemplo_churn.png`. En local y Colab utiliza `telco_clean.csv` si está disponible y, mientras tanto, `telco_provisorio.csv`, identificando la fuente en el gráfico. En Colab se puede descargar la imagen desde el panel Archivos.
