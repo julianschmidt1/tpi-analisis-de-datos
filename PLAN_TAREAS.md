@@ -100,9 +100,9 @@ Cada tarea indica: **responsable**, **tamaño**, **depende de**, **entrada → s
 
 - [ ] **4 · Matías · M** · Definir el problema de negocio, redactar al menos 3 hipótesis analíticas, identificar la variable objetivo y justificar que el dataset es **estructurado**.
   *Entrada:* ninguna. *Salida:* sección de texto en markdown. *Terminado:* hipótesis comprobables con los datos.
-- [ ] **5 · Julián · M** · Tabla de relevamiento de las 21 variables: tipo teórico (cualitativa nominal/ordinal, cuantitativa discreta/continua) frente al `dtype` que asigna Pandas, con las discrepancias señaladas.
+- [ ] **5 · Emmanuel · M** · Tabla de relevamiento de las 21 variables: tipo teórico (cualitativa nominal/ordinal, cuantitativa discreta/continua) frente al `dtype` que asigna Pandas, con las discrepancias señaladas.
   *Entrada:* `data/raw`. *Salida:* tabla en markdown. *Terminado:* ninguna variable sin clasificar y cada discrepancia comentada.
-- [ ] **6 · Emmanuel · L** · **Tarea crítica.** Carga, inspección (`shape`, `info`, `describe`, duplicados) y tratamiento de `TotalCharges` (espacios `" "` → NaN → `to_numeric`). Decidir y justificar el tratamiento de los nulos (decisión abierta 1). Depende de: 2.
+- [ ] **6 · Julián · L** · **Tarea crítica.** Carga, inspección (`shape`, `info`, `describe`, duplicados) y tratamiento de `TotalCharges` (espacios `" "` → NaN → `to_numeric`). Decidir y justificar el tratamiento de los nulos (decisión abierta 1). Depende de: 2.
   *Entrada:* `data/raw`. *Salida:* `telco_step1.csv`. *Terminado:* `TotalCharges` es `float64`, sin nulos, y hay una justificación escrita.
 - [ ] **7 · Matías · M** · Adecuación de `dtypes` (`category`, `SeniorCitizen` 0/1 → Yes/No si se decide), renombrado de columnas, eliminar `customerID`, crear columnas calculadas por aritmética directa (propuesta: `ingreso_estimado = MonthlyCharges * tenure` y `diferencia_facturacion = TotalCharges - ingreso_estimado`). Depende de: 6.
   *Entrada:* `telco_step1.csv`. *Salida:* `telco_step2.csv`. *Terminado:* `df.info()` muestra solo los tipos esperados.
@@ -195,8 +195,8 @@ Cada tarea indica: **responsable**, **tamaño**, **depende de**, **entrada → s
 | | Tareas | Perfil de carga |
 |---|---|---|
 | **Matías** | 3, 4, 7, 11, 13, 16, 18, 21, 24, 27, 30, 32, 34 (+37) | Más tareas, pero chicas |
-| **Julián** | 1, 5, 8, 10, 14, 19, 20, 23, 25, 29, 33, 35 (+37) | Integración técnica en Colab |
-| **Emmanuel** | 2, 6, 9, 12, 15, 17, 22, 26, 28, 31, 36 (+37) | Datos críticos y cierre del informe |
+| **Julián** | 1, 6, 8, 10, 14, 19, 20, 23, 25, 29, 33, 35 (+37) | Integración técnica en Colab |
+| **Emmanuel** | 2, 5, 9, 12, 15, 17, 22, 26, 28, 31, 36 (+37) | Datos críticos y cierre del informe |
 
 La carga se reajusta si alguna tarea resulta más pesada de lo previsto: quien termine antes toma tareas de otro. Registrar el cambio en este archivo.
 
