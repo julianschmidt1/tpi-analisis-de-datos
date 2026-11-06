@@ -22,3 +22,11 @@
 ```
 
 Las reglas de trabajo (ramas, commits, revisión cruzada) están en [PLAN_TAREAS.md](PLAN_TAREAS.md).
+
+## Plantilla y datos provisorios (tarea 3)
+
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/julianschmidt1/tpi-analisis-de-datos/blob/main/notebooks/trabajo/3_plantilla.ipynb)
+
+La [plantilla de notebook](notebooks/trabajo/3_plantilla.ipynb) carga el CSV original desde GitHub en Colab o desde `data/raw/` en local. Al ejecutar todas sus celdas, genera `data/processed/telco_provisorio.csv`: solo convierte `TotalCharges` a numérico y conserva los nulos para la limpieza posterior.
+
+Para ejecutarla en local, instalar las dependencias con `pip install -r requirements.txt` e iniciar `jupyter lab` desde el repositorio. El badge estará disponible cuando el notebook se integre en `main`.
