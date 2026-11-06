@@ -19,9 +19,20 @@
 
 **Notebooks** (los `.ipynb` generan conflictos de merge feos)
 - Cada tarea tiene **su propio notebook** en `notebooks/trabajo/<n>_<tema>.ipynb` (por ejemplo `6_totalcharges.ipynb`, donde `<n>` es el número de tarea). Nunca dos personas editan el mismo `.ipynb`.
+- Usar el [formato común de los notebooks](#formato-común-de-los-notebooks) al empezar una tarea.
 - El notebook final `notebooks/TPI_Analisis_de_Datos.ipynb` lo arma **una sola persona (J, tarea 29)** copiando las celdas de los notebooks de trabajo en orden.
 - Cada celda de código lleva un comentario o markdown arriba que explique **qué** hace y **por qué**, y cada gráfico o tabla lleva su interpretación orientada al negocio (lo pide la consigna).
 - Nunca rutas absolutas del tipo `F:\...`. Todo con rutas relativas al repo, para que funcione en Colab.
+
+#### Formato común de los notebooks
+
+Usar [el notebook del punto 3](notebooks/trabajo/3_plantilla.ipynb) como plantilla y adaptar estas partes a la tarea:
+
+1. **Encabezado.** Título con el formato `Tarea <n> · <tema>`, botón **Open in Colab**, datos del TPI, integrantes, responsable y un párrafo con el objetivo y los archivos de entrada y salida, si corresponde.
+2. **Cómo ejecutarlo.** Indicar los pasos para correr todas las celdas en local y en Colab. El botón debe abrir el notebook en la rama publicada durante la revisión y apuntar a `main` para la versión integrada.
+3. **Secciones numeradas.** Organizar el trabajo en secciones como `## 1. Carga de datos`. Antes de cada celda de código, explicar en Markdown qué hace y por qué. Después de cada tabla o gráfico, explicar qué muestra y qué significa para el problema de negocio.
+4. **Carga y exportación.** Si la tarea usa datos del repo, seguir la celda de carga de la plantilla. En local, buscar el archivo desde el directorio de ejecución o sus padres. En Colab, leer desde GitHub cuando el archivo ya esté publicado, o indicar cómo obtenerlo si se genera en una tarea previa. Guardar las salidas en las rutas relativas acordadas en los contratos de datos y aclarar dónde encontrarlas.
+5. **Verificación.** Antes de abrir el PR, reiniciar el entorno y ejecutar todas las celdas en orden. Comprobar el criterio de terminado de la tarea y verificar que el botón de Colab abre el notebook publicado.
 
 **Calidad**
 - `random_state=42` en todo lo que lo admita.
