@@ -34,3 +34,9 @@ Para ejecutarla en local, instalar las dependencias con `pip install -r requirem
 ## Problema de negocio e hipótesis (tarea 4)
 
 El [notebook de fundamentos](notebooks/trabajo/4_problema_hipotesis.ipynb) define el problema de negocio, la variable objetivo `Churn` y tres hipótesis sobre contrato, antigüedad y cargo mensual. También explica por qué el dataset es estructurado y cómo se evaluarán las hipótesis durante el EDA. Contiene únicamente texto en Markdown y no requiere ejecutar código.
+
+## Tipos y columnas calculadas (tarea 7)
+
+El [notebook de transformación](notebooks/trabajo/7_tipos_columnas.ipynb) carga `data/processed/telco_step1.csv`, elimina `customerID`, convierte `SeniorCitizen` a `No/Yes` y las variables categóricas a `category`. Agrega `ingreso_estimado` y `diferencia_facturacion` y exporta `data/processed/telco_step2.csv`, con 7.043 clientes y 22 columnas.
+
+Se ejecuta completo en local o en Colab; en Colab la entrada se obtiene desde GitHub y la salida queda en el panel Archivos. Como CSV no conserva los tipos categóricos, el notebook incluye el esquema `tipos_esperados` y verifica su recuperación con `pd.read_csv(ruta, dtype=tipos_esperados)`.
