@@ -41,6 +41,12 @@ El [notebook de transformación](notebooks/trabajo/7_tipos_columnas.ipynb) carga
 
 Se ejecuta completo en local o en Colab; en Colab la entrada se obtiene desde GitHub y la salida queda en el panel Archivos. Como CSV no conserva los tipos categóricos, el notebook incluye el esquema `tipos_esperados` y verifica su recuperación con `pd.read_csv(ruta, dtype=tipos_esperados)`.
 
+## Partición para preprocesamiento (tarea 21)
+
+El [notebook de partición](notebooks/trabajo/21_particion_datos.ipynb) separa `Churn` de los predictores, codifica `No=0` y `Yes=1` y divide el dataset limpio en entrenamiento y prueba (80/20), con estratificación y `random_state=42`.
+
+Exporta los cuatro conjuntos sin transformar a `data/processed/particion/`. Para continuar en las tareas 22 y 23, leer los CSV con `index_col='fila_origen'` y ajustar codificadores y escaladores solo con entrenamiento. El índice identifica filas y no debe usarse como predictor.
+
 ## Estilo común de gráficos (tarea 16)
 
 El [notebook de estilo y exportación](notebooks/trabajo/16_estilo_graficos.ipynb) contiene una celda lista para copiar a los notebooks de visualización. Define paleta, fuentes y tamaños, los colores de `Churn` (`No` azul, `Yes` naranja) y `guardar_figura(fig, nombre)`, que exporta PNG a 300 dpi en `reports/figures/`.
