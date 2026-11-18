@@ -47,6 +47,12 @@ El [notebook de partición](notebooks/trabajo/21_particion_datos.ipynb) separa `
 
 Exporta los cuatro conjuntos sin transformar a `data/processed/particion/`. Para continuar en las tareas 22 y 23, leer los CSV con `index_col='fila_origen'` y ajustar codificadores y escaladores solo con entrenamiento. El índice identifica filas y no debe usarse como predictor.
 
+## Codificación de variables (tarea 22)
+
+El [notebook de codificación](notebooks/trabajo/22_codificacion.ipynb) utiliza la partición de la tarea 21. Aplica One-Hot completo a las nominales, incluido `PaymentMethod`, y codifica `Contract` como mensual=0, un año=1 y dos años=2. Los codificadores se ajustan solo con entrenamiento; test se transforma con las categorías aprendidas.
+
+Exporta 46 predictores numéricos sin escalar a `data/processed/codificacion/`. El notebook incluye el esquema para integrarlo con el escalado en la tarea 23 y verifica el orden contractual, la alineación de etiquetas y la conservación de las variables numéricas. En Colab requiere cargar los cuatro CSV de la tarea 21 en `data/processed/particion/`.
+
 ## Estilo común de gráficos (tarea 16)
 
 El [notebook de estilo y exportación](notebooks/trabajo/16_estilo_graficos.ipynb) contiene una celda lista para copiar a los notebooks de visualización. Define paleta, fuentes y tamaños, los colores de `Churn` (`No` azul, `Yes` naranja) y `guardar_figura(fig, nombre)`, que exporta PNG a 300 dpi en `reports/figures/`.
