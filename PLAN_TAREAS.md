@@ -70,7 +70,7 @@ Estos acuerdos permiten que las piezas avancen en paralelo sin esperarse.
 ## 3. Decisiones abiertas (resolver entre los tres, anotar el resultado en el informe)
 
 1. **¿Qué hacer con las filas de `TotalCharges` vacío?** En la versión pública del dataset son pocas (alrededor de 11, de clientes con `tenure = 0`; verificar al cargarlo). Opciones: imputar con 0 o eliminarlas. Decide quien hace 6 y lo justifica por escrito.
-2. **`PaymentMethod`**: One-Hot completo, o agrupar por tasa de churn (automático vs manual). La Clase 7 pide justificarlo en el informe.
+2. **`PaymentMethod`**: decisión implementada en la tarea 22: **One-Hot completo**, conservando cada método sin imponer un orden ni aprender agrupaciones a partir del objetivo. Ajuste solo con train. Incorporar esta justificación al informe; pendiente de revisión cruzada.
 3. **`Contract`**: Ordinal Encoding (`Month-to-month` < `One year` < `Two year`), con su fundamento teórico en el informe.
 4. **Modelo de clasificación único**: la consigna pide uno. Propuesta: Regresión Logística, por ser interpretable y por tener ya un ejemplo en Clase 7.
 5. **Variable de la regresión lineal**: la consigna sugiere `TotalCharges`. Propuesta: `TotalCharges ~ tenure` (simple, un solo predictor).
