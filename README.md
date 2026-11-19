@@ -7,6 +7,9 @@
 - **Dataset:** Telco Customer Churn (Kaggle)
 
 ## Estructura del repositorio
+
+El notebook integrado está en [TPI_Analisis_de_Datos.ipynb](notebooks/TPI_Analisis_de_Datos.ipynb). Incluye limpieza, EDA, visualización, preprocesamiento y modelos. Para reproducirlo, instalar `requirements.txt` y ejecutar todas las celdas en orden, o usar el botón de Colab incluido en el notebook.
+
 ```
 ├── data/
 │   ├── raw/          # Dataset original (no se modifica)
