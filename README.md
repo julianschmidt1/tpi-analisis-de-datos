@@ -1,5 +1,7 @@
 # TPI – Introducción al Análisis de Datos (Predicción de Churn en Telco)
 
+La [parte 1 del informe ejecutivo](docs/30_informe_ejecutivo_parte1.md) (tarea 30) incluye carátula, resumen ejecutivo, problema de negocio, metodología, limpieza y EDA, con tablas y figuras recalculadas sobre el dataset limpio. Para regenerar su evidencia, ejecutar `python docs/30_reproducir_eda.py`. Es el texto fuente para ensamblar el PDF en la tarea 31.
+
 > Esqueleto provisorio. La versión final (tarea 6D del plan) incluirá la descripción del problema, el badge de Colab y la guía completa.
 
 - **Materia:** Introducción al Análisis de Datos – UTN FRA, División 343, 2.º cuatrimestre 2026
