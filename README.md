@@ -58,3 +58,11 @@ Exporta 46 predictores numéricos sin escalar a `data/processed/codificacion/`. 
 El [notebook de estilo y exportación](notebooks/trabajo/16_estilo_graficos.ipynb) contiene una celda lista para copiar a los notebooks de visualización. Define paleta, fuentes y tamaños, los colores de `Churn` (`No` azul, `Yes` naranja) y `guardar_figura(fig, nombre)`, que exporta PNG a 300 dpi en `reports/figures/`.
 
 Incluye un ejemplo de proporciones de churn exportado a `reports/figures/16_ejemplo_churn.png`. En local y Colab utiliza `telco_clean.csv` si está disponible y, mientras tanto, `telco_provisorio.csv`, identificando la fuente en el gráfico. En Colab se puede descargar la imagen desde el panel Archivos.
+
+## Escalado y preprocesamiento integrado (tarea 23)
+
+El [notebook de escalado](notebooks/trabajo/23_escalado.ipynb) lee la partición original de la tarea 21 e integra en `preprocessor` la codificación de la tarea 22 y `StandardScaler` para las cinco variables numéricas, incluidas las calculadas. Compara las escalas de entrenamiento con `MinMaxScaler`; ambos se ajustan exclusivamente con train. La salida final utiliza StandardScaler.
+
+Exporta `X_train.csv`, `X_test.csv`, `y_train.csv` e `y_test.csv` directamente en `data/processed/`: 5.634 filas de entrenamiento, 1.409 de prueba y 46 predictores. Para modelado, leer con `pd.read_csv(ruta, index_col='fila_origen')`; en las etiquetas seleccionar `Churn`. No incluir el índice como predictor ni volver a escalar estas matrices. El notebook verifica media cercana a cero y desvío poblacional cercano a uno en train, alineación de etiquetas y lectura de las exportaciones.
+
+En local requiere los cuatro CSV de `data/processed/particion/`. En Colab, cargar esos archivos conservando la estructura de carpetas. El objeto ajustado `preprocessor` queda en memoria; los CSV no lo serializan. La revisión transversal del flujo corresponde a la tarea 24.
