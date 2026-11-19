@@ -66,3 +66,9 @@ El [notebook de escalado](notebooks/trabajo/23_escalado.ipynb) lee la partición
 Exporta `X_train.csv`, `X_test.csv`, `y_train.csv` e `y_test.csv` directamente en `data/processed/`: 5.634 filas de entrenamiento, 1.409 de prueba y 46 predictores. Para modelado, leer con `pd.read_csv(ruta, index_col='fila_origen')`; en las etiquetas seleccionar `Churn`. No incluir el índice como predictor ni volver a escalar estas matrices. El notebook verifica media cercana a cero y desvío poblacional cercano a uno en train, alineación de etiquetas y lectura de las exportaciones.
 
 En local requiere los cuatro CSV de `data/processed/particion/`. En Colab, cargar esos archivos conservando la estructura de carpetas. El objeto ajustado `preprocessor` queda en memoria; los CSV no lo serializan. La revisión transversal del flujo corresponde a la tarea 24.
+
+## Auditoría anti-leakage (tarea 24)
+
+El [notebook de verificación](notebooks/trabajo/24_verificacion_antileakage.ipynb) reproduce la partición de la tarea 21, ejecuta el código de las tareas 22 y 23 sin sus celdas de exportación y registra qué conjuntos reciben las llamadas de ajuste y transformación. Comprueba estadísticas aprendidas exclusivamente de train, categorías, parámetros inalterados al transformar test y coincidencia con los CSV exportados. No modifica los datos.
+
+Requiere el dataset limpio, los notebooks 22 y 23 y las exportaciones de las tareas 21–23, conservando la estructura del repositorio. Incluye una lista de comprobaciones y documenta el límite del EDA realizado sobre la muestra completa: la auditoría valida el ajuste del preprocesamiento; las decisiones posteriores de modelado deben usar validación dentro de train y reservar test para la evaluación final. La revisión cruzada del PR sigue pendiente.
