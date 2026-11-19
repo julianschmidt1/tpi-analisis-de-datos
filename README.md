@@ -1,86 +1,107 @@
-# TPI – Introducción al Análisis de Datos (Predicción de Churn en Telco)
+# TPI · Análisis de bajas de clientes de Telco
 
-La [parte 1 del informe ejecutivo](docs/30_informe_ejecutivo_parte1.md) (tarea 30) incluye carátula, resumen ejecutivo, problema de negocio, metodología, limpieza y EDA, con tablas y figuras recalculadas sobre el dataset limpio. Para regenerar su evidencia, ejecutar `python docs/30_reproducir_eda.py`. Es el texto fuente para ensamblar el PDF en la tarea 31.
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/julianschmidt1/tpi-analisis-de-datos/blob/main/notebooks/TPI_Analisis_de_Datos.ipynb)
 
-> Esqueleto provisorio. La versión final (tarea 6D del plan) incluirá la descripción del problema, el badge de Colab y la guía completa.
+**Introducción al Análisis de Datos · UTN Facultad Regional Avellaneda**
+**División 343 · Segundo cuatrimestre de 2026**
+**Integrantes:** Matías, Julián y Emmanuel.
 
-- **Materia:** Introducción al Análisis de Datos – UTN FRA, División 343, 2.º cuatrimestre 2026
-- **Integrantes:** Matías, Julián y Emmanuel
-- **Dataset:** Telco Customer Churn (Kaggle)
+Este trabajo analiza el abandono de clientes (*churn*) en **Telco Customer Churn**, un dataset obtenido de Kaggle con 7.043 clientes y 21 variables originales. Busca comprender cómo se relacionan el contrato, la antigüedad, los servicios y los cargos con las bajas registradas, para orientar el estudio de acciones de retención.
+
+Cada fila representa un cliente; la variable objetivo `Churn` indica baja (`Yes`) o permanencia (`No`). El trabajo incluye limpieza, análisis exploratorio, visualización, preprocesamiento, regresión lineal simple (`TotalCharges ~ tenure`) y clasificación mediante Regresión Logística.
+
+## Entregables
+
+| Recurso | Contenido y estado |
+|---|---|
+| [Notebook integrado](notebooks/TPI_Analisis_de_Datos.ipynb) | Pipeline completo con explicaciones, gráficos y evaluación. Disponible en local y Colab. |
+| [Informe ejecutivo, parte 1](docs/30_informe_ejecutivo_parte1.md) | Carátula, resumen ejecutivo, problema, metodología, limpieza y EDA sobre datos limpios. |
+| Informe ejecutivo final | Pendiente de la tarea 31: incorporar la segunda parte y ensamblar `docs/INFORME_EJECUTIVO.pdf`. |
+| [Plan de tareas](PLAN_TAREAS.md) | Responsabilidades, contratos de datos y reglas de revisión. |
+
+## Ejecutar en Google Colab
+
+1. Abrir el botón **Open in Colab** del encabezado: apunta al notebook integrado en `main`.
+2. Conectar el entorno y elegir **Entorno de ejecución → Reiniciar sesión y ejecutar todas**.
+3. Leer los resultados en orden. El notebook descarga el CSV original desde GitHub y genera los archivos intermedios durante la ejecución; requiere conexión a internet.
+4. Descargar las salidas que se quieran conservar desde el panel **Archivos**. Los datos generados quedan en `data/processed/` y las figuras en `reports/figures/`. Los archivos de la sesión de Colab son temporales.
+
+## Ejecutar en local
+
+Se necesita Python 3 con `pip`. Clonar el repositorio y crear un entorno virtual:
+
+```bash
+git clone https://github.com/julianschmidt1/tpi-analisis-de-datos.git
+cd tpi-analisis-de-datos
+python -m venv .venv
+```
+
+Activar el entorno con el comando correspondiente:
+
+| Terminal | Comando |
+|---|---|
+| Windows · PowerShell | `.venv\Scripts\Activate.ps1` |
+| Windows · Git Bash | `source .venv/Scripts/activate` |
+| Linux/macOS · Bash | `source .venv/bin/activate` |
+
+Instalar las dependencias e iniciar Jupyter desde la raíz del repositorio:
+
+```bash
+python -m pip install -r requirements.txt
+jupyter lab
+```
+
+Abrir `notebooks/TPI_Analisis_de_Datos.ipynb`, reiniciar el kernel y ejecutar todas las celdas en orden. El notebook utiliza el CSV original incluido en el repositorio y regenera las salidas. Las rutas se resuelven desde el directorio de ejecución o sus padres; las exportaciones pueden sobrescribir archivos generados de ejecuciones anteriores.
+
+Los notebooks de `notebooks/trabajo/` conservan el desarrollo por tarea y pueden requerir salidas previas, según sus instrucciones. Para reproducir el flujo completo, usar el notebook integrado.
+
+## Stack
+
+| Herramienta | Uso |
+|---|---|
+| Python | Lenguaje del análisis. |
+| Pandas y NumPy | Carga, limpieza, transformación y cálculo numérico. |
+| Matplotlib y Seaborn | Visualización y exportación de figuras. |
+| SciPy | Cálculos estadísticos y soporte para correlaciones por rangos. |
+| Scikit-learn | Partición, codificación, escalado, modelos y métricas. |
+| JupyterLab / Google Colab | Ejecución y lectura de notebooks. |
+
+Las dependencias están en [requirements.txt](requirements.txt). No se fijan versiones; los resultados numéricos pueden presentar pequeñas variaciones entre entornos.
 
 ## Estructura del repositorio
 
-El notebook integrado está en [TPI_Analisis_de_Datos.ipynb](notebooks/TPI_Analisis_de_Datos.ipynb). Incluye limpieza, EDA, visualización, preprocesamiento y modelos. Para reproducirlo, instalar `requirements.txt` y ejecutar todas las celdas en orden, o usar el botón de Colab incluido en el notebook.
-
-```
+```text
 ├── data/
-│   ├── raw/          # Dataset original (no se modifica)
-│   └── processed/    # Datasets depurados y transformados
+│   ├── raw/                       # CSV original, sin modificar
+│   └── processed/                 # Datos limpios y matrices para modelado
+│       ├── particion/             # Train/test sin transformar (tarea 21)
+│       └── codificacion/          # Matrices codificadas sin escalar (tarea 22)
 ├── notebooks/
-│   ├── trabajo/      # Notebooks de trabajo por tarea
-│   └── TPI_Analisis_de_Datos.ipynb   # Notebook final (pendiente)
-├── docs/
-│   └── INFORME_EJECUTIVO.pdf         # Informe final (pendiente)
-├── reports/figures/  # Gráficos exportados
-├── PLAN_TAREAS.md    # Reparto de tareas y reglas de trabajo
+│   ├── TPI_Analisis_de_Datos.ipynb # Notebook integrado
+│   └── trabajo/                   # Desarrollo individual por tarea
+├── docs/                          # Hallazgos y texto fuente del informe
+│   ├── 30_informe_ejecutivo_parte1.md
+│   └── 30_reproducir_eda.py        # Regenera evidencia de la parte 1
+├── reports/
+│   ├── figures/                   # Gráficos exportados en PNG
+│   └── tables/                    # Tablas del informe en CSV
+├── PLAN_TAREAS.md
+├── README.md
 └── requirements.txt
 ```
 
-Las reglas de trabajo (ramas, commits, revisión cruzada) están en [PLAN_TAREAS.md](PLAN_TAREAS.md).
+El [CSV original](data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv) se conserva sin modificar. La limpieza genera [telco_clean.csv](data/processed/telco_clean.csv), con 7.043 clientes y 22 columnas: se elimina `customerID` y se agregan `ingreso_estimado` y `diferencia_facturacion`. `Churn` permanece como `Yes/No` en esta etapa y se codifica como `No=0`, `Yes=1` para clasificación.
 
-## Plantilla y datos provisorios (tarea 3)
+La clasificación utiliza una partición 80/20 estratificada con `random_state=42`. Los codificadores y escaladores se ajustan solo con train. Las matrices finales `X_train.csv`, `X_test.csv`, `y_train.csv` e `y_test.csv` se exportan directamente en `data/processed/` y se leen con `index_col='fila_origen'`: el índice identifica clientes y no es un predictor. La regresión lineal tiene su propia partición.
 
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/julianschmidt1/tpi-analisis-de-datos/blob/main/notebooks/trabajo/3_plantilla.ipynb)
+Para regenerar únicamente las tablas y figuras de la primera parte del informe, ejecutar desde la raíz:
 
-La [plantilla de notebook](notebooks/trabajo/3_plantilla.ipynb) carga el CSV original desde GitHub en Colab o desde `data/raw/` en local. Al ejecutar todas sus celdas, genera `data/processed/telco_provisorio.csv`: solo convierte `TotalCharges` a numérico y conserva los nulos para la limpieza posterior.
+```bash
+python docs/30_reproducir_eda.py
+```
 
-Para ejecutarla en local, instalar las dependencias con `pip install -r requirements.txt` e iniciar `jupyter lab` desde el repositorio. El badge estará disponible cuando el notebook se integre en `main`.
+## Alcance y organización
 
-## Problema de negocio e hipótesis (tarea 4)
+Las diferencias entre segmentos describen asociaciones y no demuestran que una intervención reduzca las bajas. El dataset no permite validar un horizonte futuro de abandono ni calcular rentabilidad de campañas sin información adicional. El notebook interpreta los errores de clasificación y compara su exactitud con una línea base mayoritaria.
 
-El [notebook de fundamentos](notebooks/trabajo/4_problema_hipotesis.ipynb) define el problema de negocio, la variable objetivo `Churn` y tres hipótesis sobre contrato, antigüedad y cargo mensual. También explica por qué el dataset es estructurado y cómo se evaluarán las hipótesis durante el EDA. Contiene únicamente texto en Markdown y no requiere ejecutar código.
-
-## Tipos y columnas calculadas (tarea 7)
-
-El [notebook de transformación](notebooks/trabajo/7_tipos_columnas.ipynb) carga `data/processed/telco_step1.csv`, elimina `customerID`, convierte `SeniorCitizen` a `No/Yes` y las variables categóricas a `category`. Agrega `ingreso_estimado` y `diferencia_facturacion` y exporta `data/processed/telco_step2.csv`, con 7.043 clientes y 22 columnas.
-
-Se ejecuta completo en local o en Colab; en Colab la entrada se obtiene desde GitHub y la salida queda en el panel Archivos. Como CSV no conserva los tipos categóricos, el notebook incluye el esquema `tipos_esperados` y verifica su recuperación con `pd.read_csv(ruta, dtype=tipos_esperados)`.
-
-## Partición para preprocesamiento (tarea 21)
-
-El [notebook de partición](notebooks/trabajo/21_particion_datos.ipynb) separa `Churn` de los predictores, codifica `No=0` y `Yes=1` y divide el dataset limpio en entrenamiento y prueba (80/20), con estratificación y `random_state=42`.
-
-Exporta los cuatro conjuntos sin transformar a `data/processed/particion/`. Para continuar en las tareas 22 y 23, leer los CSV con `index_col='fila_origen'` y ajustar codificadores y escaladores solo con entrenamiento. El índice identifica filas y no debe usarse como predictor.
-
-## Codificación de variables (tarea 22)
-
-El [notebook de codificación](notebooks/trabajo/22_codificacion.ipynb) utiliza la partición de la tarea 21. Aplica One-Hot completo a las nominales, incluido `PaymentMethod`, y codifica `Contract` como mensual=0, un año=1 y dos años=2. Los codificadores se ajustan solo con entrenamiento; test se transforma con las categorías aprendidas.
-
-Exporta 46 predictores numéricos sin escalar a `data/processed/codificacion/`. El notebook incluye el esquema para integrarlo con el escalado en la tarea 23 y verifica el orden contractual, la alineación de etiquetas y la conservación de las variables numéricas. En Colab requiere cargar los cuatro CSV de la tarea 21 en `data/processed/particion/`.
-
-## Estilo común de gráficos (tarea 16)
-
-El [notebook de estilo y exportación](notebooks/trabajo/16_estilo_graficos.ipynb) contiene una celda lista para copiar a los notebooks de visualización. Define paleta, fuentes y tamaños, los colores de `Churn` (`No` azul, `Yes` naranja) y `guardar_figura(fig, nombre)`, que exporta PNG a 300 dpi en `reports/figures/`.
-
-Incluye un ejemplo de proporciones de churn exportado a `reports/figures/16_ejemplo_churn.png`. En local y Colab utiliza `telco_clean.csv` si está disponible y, mientras tanto, `telco_provisorio.csv`, identificando la fuente en el gráfico. En Colab se puede descargar la imagen desde el panel Archivos.
-
-## Escalado y preprocesamiento integrado (tarea 23)
-
-El [notebook de escalado](notebooks/trabajo/23_escalado.ipynb) lee la partición original de la tarea 21 e integra en `preprocessor` la codificación de la tarea 22 y `StandardScaler` para las cinco variables numéricas, incluidas las calculadas. Compara las escalas de entrenamiento con `MinMaxScaler`; ambos se ajustan exclusivamente con train. La salida final utiliza StandardScaler.
-
-Exporta `X_train.csv`, `X_test.csv`, `y_train.csv` e `y_test.csv` directamente en `data/processed/`: 5.634 filas de entrenamiento, 1.409 de prueba y 46 predictores. Para modelado, leer con `pd.read_csv(ruta, index_col='fila_origen')`; en las etiquetas seleccionar `Churn`. No incluir el índice como predictor ni volver a escalar estas matrices. El notebook verifica media cercana a cero y desvío poblacional cercano a uno en train, alineación de etiquetas y lectura de las exportaciones.
-
-En local requiere los cuatro CSV de `data/processed/particion/`. En Colab, cargar esos archivos conservando la estructura de carpetas. El objeto ajustado `preprocessor` queda en memoria; los CSV no lo serializan. La revisión transversal del flujo corresponde a la tarea 24.
-
-## Auditoría anti-leakage (tarea 24)
-
-El [notebook de verificación](notebooks/trabajo/24_verificacion_antileakage.ipynb) reproduce la partición de la tarea 21, ejecuta el código de las tareas 22 y 23 sin sus celdas de exportación y registra qué conjuntos reciben las llamadas de ajuste y transformación. Comprueba estadísticas aprendidas exclusivamente de train, categorías, parámetros inalterados al transformar test y coincidencia con los CSV exportados. No modifica los datos.
-
-Requiere el dataset limpio, los notebooks 22 y 23 y las exportaciones de las tareas 21–23, conservando la estructura del repositorio. Incluye una lista de comprobaciones y documenta el límite del EDA realizado sobre la muestra completa: la auditoría valida el ajuste del preprocesamiento; las decisiones posteriores de modelado deben usar validación dentro de train y reservar test para la evaluación final. La revisión cruzada del PR sigue pendiente.
-
-
-## Evaluación de clasificación (tarea 27)
-
-El [notebook de evaluación](notebooks/trabajo/27_evaluacion_clasificacion.ipynb) reproduce el modelo de la tarea 26 con ajuste exclusivo sobre train y lo compara con una línea base mayoritaria sobre los mismos 1.409 clientes de test. Obtiene 80,55 % de exactitud frente a 73,46 % de la base, con 165 falsos negativos y 109 falsos positivos. Interpreta el impacto de ambos errores y exporta las matrices a `reports/figures/27_matrices_confusion.png`.
-
-Se ejecuta en local o en Colab con los cuatro CSV de la tarea 23; no vuelve a escalar los datos ni ajusta parámetros con test. El badge apunta a la rama de revisión hasta integrar el trabajo.
+Se trabaja en una rama por tarea. `main` se actualiza mediante Pull Request con revisión cruzada, según el [plan](PLAN_TAREAS.md).
