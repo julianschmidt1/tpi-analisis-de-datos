@@ -1,0 +1,13 @@
+## Resumen ejecutivo
+
+Este informe analiza el abandono de clientes (*churn*) de una empresa de telecomunicaciones a partir del dataset Telco Customer Churn, con 7.043 clientes, de los cuales 1.869 se dieron de baja (**26,54 %**). El objetivo es entender qué características se asocian con la baja y evaluar si un modelo sencillo puede anticiparla.
+
+**Hallazgos principales.** El abandono se concentra en tres situaciones: los clientes **nuevos** (47,44 % de baja con hasta 12 meses de antigüedad, frente a 17,13 % del resto), los de **contrato mensual** (42,71 %, frente a 11,27 % en contratos de un año y 2,83 % en los de dos años; reúnen el 88,55 % de todas las bajas) y los de **fibra óptica** (41,89 %, frente a 18,96 % en DSL). El cheque electrónico también muestra una tasa alta (45,29 %), pero esa diferencia se reduce mucho cuando se consideran las otras características.
+
+**Modelos.** Una regresión lineal simple estima el cargo acumulado a partir de la antigüedad con un R² de 0,670 y un error absoluto medio de 892,38. Una regresión logística predice la baja con una exactitud de **80,55 %** en clientes no vistos, frente a 73,46 % de una referencia que siempre responde “se queda”. Sin embargo, el modelo **detecta el 55,9 % de las bajas** y deja pasar el resto, por lo que sirve para priorizar clientes en riesgo y no para decidir de forma automática.
+
+**Recomendaciones.** Concentrar la retención en el primer año, incentivar el paso del contrato mensual a uno de mayor plazo, revisar la propuesta de valor de la fibra óptica y promover el pago automático. Estas acciones se derivan de asociaciones observadas: **no se demostró que causen una reducción del abandono**. Antes de generalizarlas conviene un piloto con grupo de control y estimar el costo de contactar a un cliente frente al costo de perderlo.
+
+**Alcance de los datos.** Se conservaron todos los clientes; las 11 filas con cargo acumulado faltante se imputaron con cero (clientes sin meses de servicio) y no se detectaron valores atípicos. El dataset no tiene fechas, por lo que los resultados describen la etiqueta registrada y no un horizonte de predicción futuro.
+
+La Parte I desarrolla el problema, la limpieza y el análisis exploratorio; la Parte II, las visualizaciones, la preparación de los datos, los modelos, su interpretación y las conclusiones.
