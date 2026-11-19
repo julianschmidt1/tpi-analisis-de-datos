@@ -72,3 +72,10 @@ En local requiere los cuatro CSV de `data/processed/particion/`. En Colab, carga
 El [notebook de verificación](notebooks/trabajo/24_verificacion_antileakage.ipynb) reproduce la partición de la tarea 21, ejecuta el código de las tareas 22 y 23 sin sus celdas de exportación y registra qué conjuntos reciben las llamadas de ajuste y transformación. Comprueba estadísticas aprendidas exclusivamente de train, categorías, parámetros inalterados al transformar test y coincidencia con los CSV exportados. No modifica los datos.
 
 Requiere el dataset limpio, los notebooks 22 y 23 y las exportaciones de las tareas 21–23, conservando la estructura del repositorio. Incluye una lista de comprobaciones y documenta el límite del EDA realizado sobre la muestra completa: la auditoría valida el ajuste del preprocesamiento; las decisiones posteriores de modelado deben usar validación dentro de train y reservar test para la evaluación final. La revisión cruzada del PR sigue pendiente.
+
+
+## Evaluación de clasificación (tarea 27)
+
+El [notebook de evaluación](notebooks/trabajo/27_evaluacion_clasificacion.ipynb) reproduce el modelo de la tarea 26 con ajuste exclusivo sobre train y lo compara con una línea base mayoritaria sobre los mismos 1.409 clientes de test. Obtiene 80,55 % de exactitud frente a 73,46 % de la base, con 165 falsos negativos y 109 falsos positivos. Interpreta el impacto de ambos errores y exporta las matrices a `reports/figures/27_matrices_confusion.png`.
+
+Se ejecuta en local o en Colab con los cuatro CSV de la tarea 23; no vuelve a escalar los datos ni ajusta parámetros con test. El badge apunta a la rama de revisión hasta integrar el trabajo.
