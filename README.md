@@ -16,7 +16,7 @@ Cada fila representa un cliente; la variable objetivo `Churn` indica baja (`Yes`
 |---|---|
 | [Notebook integrado](notebooks/TPI_Analisis_de_Datos.ipynb) | Pipeline completo con explicaciones, gráficos y evaluación. Disponible en local y Colab. |
 | [Informe ejecutivo, parte 1](docs/30_informe_ejecutivo_parte1.md) | Carátula, resumen ejecutivo, problema, metodología, limpieza y EDA sobre datos limpios. |
-| Informe ejecutivo final | Pendiente de la tarea 31: incorporar la segunda parte y ensamblar `docs/INFORME_EJECUTIVO.pdf`. |
+| [Informe ejecutivo final](docs/INFORME_EJECUTIVO.pdf) | PDF de 18 páginas con ambas partes, modelos y conclusiones. |
 | [Plan de tareas](PLAN_TAREAS.md) | Responsabilidades, contratos de datos y reglas de revisión. |
 
 ## Ejecutar en Google Colab
@@ -81,7 +81,9 @@ Las dependencias están en [requirements.txt](requirements.txt). No se fijan ver
 │   └── trabajo/                   # Desarrollo individual por tarea
 ├── docs/                          # Hallazgos y texto fuente del informe
 │   ├── 30_informe_ejecutivo_parte1.md
-│   └── 30_reproducir_eda.py        # Regenera evidencia de la parte 1
+│   ├── 30_reproducir_eda.py        # Regenera evidencia de la parte 1
+│   ├── 31_ensamblar_informe.py     # Genera el PDF final
+│   └── INFORME_EJECUTIVO.pdf      # Informe ejecutivo completo
 ├── reports/
 │   ├── figures/                   # Gráficos exportados en PNG
 │   └── tables/                    # Tablas del informe en CSV
