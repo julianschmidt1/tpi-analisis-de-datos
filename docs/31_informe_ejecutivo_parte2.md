@@ -53,28 +53,39 @@ La tarea 24 verificó el orden de las operaciones: ningún ajuste (`fit`) recibi
 
 ## 9. Modelos y evaluación
 
-Se entrenaron dos modelos con objetivos distintos, como pide la consigna: uno que estima un número (regresión) y otro que predice una categoría (clasificación).
+Se entrenaron dos modelos con objetivos distintos: uno que estima un número (regresión) y otro que predice una categoría (clasificación).
+
+**Nota sobre el alcance.** La consigna del recuperatorio solicita únicamente el modelo de regresión, y su rúbrica evalúa el modelado sobre ese modelo. El modelo de clasificación formaba parte de la consigna original y **se decidió conservarlo porque ya estaba desarrollado y verificado**. Por eso la sección 9.1 desarrolla la regresión con mayor detalle y la sección 9.2, junto con la 10, se presenta como complemento.
 
 ### 9.1. Regresión lineal simple: estimar el cargo acumulado
 
-**Objetivo:** estimar `TotalCharges` a partir de la antigüedad (`tenure`). Se usó la antigüedad en meses, sin estandarizar, para que el coeficiente conserve su significado en unidades monetarias por mes. El modelo se ajustó con el 80 % de los clientes y se evaluó con el 20 % restante.
+**Objetivo:** estimar `TotalCharges` a partir de la antigüedad (`tenure`). Es el modelo central de esta parte del informe.
 
-| Resultado | Valor |
-|---|---:|
-| Ecuación | cargo estimado = −196,86 + 76,73 × meses |
-| R² en prueba | 0,670 |
-| Error absoluto medio (MAE) en prueba | 892,38 |
-| MAE de la referencia que predice siempre el promedio | 1.919,51 |
+**Decisiones de diseño.** El predictor es la antigüedad en meses, sin estandarizar: en una regresión con un solo predictor la estandarización no cambia las predicciones ni las métricas, solo la escala del coeficiente, y de este modo la pendiente conserva su significado en unidades monetarias por mes. La partición 80/20 se hizo **antes** de ajustar y el modelo se ajustó únicamente con el 80 % de los clientes (semilla 42), para prevenir la fuga de datos. No se usaron `ingreso_estimado` ni `diferencia_facturacion` como predictores, porque se calculan a partir del propio cargo acumulado y filtrarían información del objetivo.
 
-**Tabla 6.** Resultados de la regresión lineal simple sobre 1.409 clientes de prueba. Los importes están en las unidades monetarias del dataset.
+| Resultado | Referencia (promedio) · prueba | Regresión · entrenamiento | Regresión · prueba |
+|---|---:|---:|---:|
+| R² | −0,0003 | 0,686 | 0,670 |
+| Error absoluto medio (MAE) | 1.919,51 | 875,04 | 892,38 |
+| Raíz del error cuadrático medio (RMSE) | 2.281,18 | 1.268,73 | 1.310,12 |
 
-**Lectura.** Por cada mes adicional de antigüedad, la recta estima 76,73 unidades más de cargo acumulado. El R² de 0,670 indica que la antigüedad explica cerca de dos tercios de la variación del cargo acumulado en la prueba; el tercio restante depende de lo que paga cada cliente por mes y de sus servicios. El MAE de 892,38 equivale a unos 40 % del cargo acumulado promedio de prueba (2.250,33) y es menos de la mitad del error de la referencia que predice el promedio (1.919,51): el modelo aporta información, aunque con un error considerable. Además, el intercepto negativo no tiene sentido como cargo real y 202 de las 1.409 estimaciones de prueba (14,3 %) resultan negativas, sobre todo en clientes nuevos: es una limitación de ajustar una recta a una relación que parte de cero. Dado que el cargo acumulado es aproximadamente el cargo mensual multiplicado por los meses, la antigüedad sola es un predictor razonable, pero un modelo con más variables podría reducir el error. Un R² alto no implica que la antigüedad *cause* el cargo acumulado ni que se acierte en el 67 % de los casos.
+**Tabla 6.** Regresión lineal simple: cargo estimado = −196,86 + 76,73 × meses. La referencia es un “modelo” que siempre predice el promedio de entrenamiento (2.287,09). Conjunto de prueba: 1.409 clientes. Los importes están en las unidades monetarias del dataset.
+
+**Lectura.** La recta reduce el error absoluto promedio de 1.919,51 a 892,38, menos de la mitad, y el R² pasa de prácticamente cero a 0,670: la antigüedad explica cerca de dos tercios de la variación del cargo acumulado en clientes que el modelo no vio. Las métricas de entrenamiento y de prueba son muy parecidas (R² de 0,686 y 0,670), por lo que no hay señales de sobreajuste.
+
+![Diagnóstico de la regresión lineal simple](../reports/figures/25_diagnostico_regresion.png)
+
+**Figura 7.** Diagnóstico de la regresión sobre los clientes de prueba. A la izquierda, la recta ajustada sobre los datos; a la derecha, los residuos (cargo real menos estimado) según la antigüedad.
+
+**Diagnóstico de los errores.** Los puntos de la Figura 7 se abren como un abanico: el error en valor absoluto crece con la antigüedad (de un MAE de 177,35 en clientes de hasta 12 meses a 1.739,49 en los de 49 a 72 meses), porque con más meses los planes baratos y caros acumulan importes muy distintos. En términos relativos, el error es de 70 % del cargo real medio en los clientes de hasta 12 meses y se estabiliza entre 38 % y 40 % desde los 13 meses. Es decir, el modelo describe mejor a los clientes con cierta antigüedad que a los recién llegados. Además, el intercepto negativo (−196,86) hace que la recta dé cero o menos para antigüedades menores a 2,57 meses: 202 de las 1.409 estimaciones de prueba (14,3 %) son negativas, todas de clientes con 0 a 2 meses. En un uso práctico convendría acotar la estimación en cero.
+
+**Interpretación de la pendiente.** La recta estima 76,73 unidades más de cargo acumulado por cada mes, un valor superior al cargo mensual medio (64,76). La diferencia se explica porque los clientes más antiguos suelen pagar más por mes (el cargo mensual medio pasa de 56,10 entre quienes tienen hasta 12 meses a 73,95 entre quienes tienen 49 a 72). La pendiente mezcla, entonces, el efecto de acumular meses con el de pertenecer a planes más caros, y describe una asociación, no una causa. Tampoco un R² de 0,670 significa que el 67 % de las estimaciones sean correctas: indica que el modelo reduce a un tercio la variación que quedaría sin explicar si se predijera siempre el promedio.
 
 ### 9.2. Regresión logística: predecir la baja
 
 **Objetivo:** predecir si un cliente se va (`Churn = 1`) o se queda (`Churn = 0`).
 
-**Por qué este modelo.** El objetivo es binario; el modelo devuelve una probabilidad de baja, y no solo una etiqueta; sus coeficientes se pueden interpretar; y es sensible a la escala, razón por la cual se estandarizaron las variables numéricas. La consigna pide un único modelo de clasificación elemental. Se entrenó con 5.634 clientes y 46 variables, con una iteración máxima de 1.000 y la semilla 42; el ajuste convergió en 40 iteraciones. La probabilidad se convierte en predicción con el umbral habitual de 0,5.
+**Por qué este modelo.** El objetivo es binario; el modelo devuelve una probabilidad de baja, y no solo una etiqueta; sus coeficientes se pueden interpretar; y es sensible a la escala, razón por la cual se estandarizaron las variables numéricas. Se entrenó un único modelo de clasificación elemental, que la consigna original incluía y la del recuperatorio ya no exige. Se entrenó con 5.634 clientes y 46 variables, con una iteración máxima de 1.000 y la semilla 42; el ajuste convergió en 40 iteraciones. La probabilidad se convierte en predicción con el umbral habitual de 0,5.
 
 **Referencia de comparación.** Como la mayoría de los clientes permanece (73,5 % en la prueba), un “modelo” que siempre responda “se queda” acertaría ese porcentaje sin detectar ninguna baja. La exactitud del modelo solo tiene valor si supera esa línea base.
 
@@ -95,7 +106,7 @@ Se entrenaron dos modelos con objetivos distintos, como pide la consigna: uno qu
 
 ![Matrices de confusión del modelo y de la línea base](../reports/figures/27_matrices_confusion.png)
 
-**Figura 7.** Matrices de confusión de la regresión logística y de la línea base, con la misma escala de color.
+**Figura 8.** Matrices de confusión de la regresión logística y de la línea base, con la misma escala de color.
 
 **Lectura.** El modelo acierta 8 de cada 10 clientes, pero la exactitud sola es engañosa: **detecta 56 de cada 100 bajas reales** (209 de 374) y deja pasar las otras 44 (165 falsos negativos). De las 318 alertas que emite, el 65,7 % corresponde a bajas reales y 109 son clientes que se habrían quedado. Cada tipo de error tiene un costo distinto: un falso negativo es un cliente que se va sin que se lo contacte, y un falso positivo es un cliente que recibe una acción de retención sin necesitarla. El dataset no informa el costo de contactar a un cliente ni el valor de perderlo, por lo que no se puede decidir cuál error conviene evitar más. Si perder un cliente cuesta más que contactarlo, convendría ajustar el umbral, y esa decisión debe tomarse con validación dentro del entrenamiento y no con la prueba.
 
@@ -105,7 +116,7 @@ Los coeficientes del modelo permiten ver qué características se asocian con un
 
 ![Probabilidad de baja según la característica del cliente](../reports/figures/28_efecto_variables.png)
 
-**Figura 8.** Probabilidad media de baja predicha por el modelo al fijar cada característica en todos los clientes de entrenamiento. La línea punteada marca la probabilidad media actual (26,5 %).
+**Figura 9.** Probabilidad media de baja predicha por el modelo al fijar cada característica en todos los clientes de entrenamiento. La línea punteada marca la probabilidad media actual (26,5 %).
 
 | Variable | Efecto sobre la probabilidad de baja | Solidez |
 |---|---|---|
@@ -134,7 +145,8 @@ La evidencia de las dos partes del informe señala dónde conviene concentrar la
 
 - **Asociación, no causalidad.** Los resultados describen qué características acompañan a las bajas. No demuestran que cambiar el contrato, el precio o el medio de pago reduzca el abandono.
 - **Sin dimensión temporal.** El dataset no tiene fechas, por lo que no se puede validar un horizonte de predicción ni comprobar que todas las variables estén disponibles antes de la baja.
-- **Clases desbalanceadas y un único modelo.** Hay 26,5 % de bajas, y el umbral de 0,5 favorece a la clase mayoritaria. La consigna pide un modelo elemental; no se compararon otros algoritmos ni se ajustó el umbral.
+- **Clases desbalanceadas y un único modelo de clasificación.** Hay 26,5 % de bajas, y el umbral de 0,5 favorece a la clase mayoritaria. Se entrenó un solo modelo elemental; no se compararon otros algoritmos ni se ajustó el umbral.
+- **Regresión con un solo predictor.** La regresión lineal simple usa únicamente la antigüedad: su error absoluto crece con los meses de servicio, falla más en términos relativos con los clientes nuevos y puede dar estimaciones negativas. Una mejora posible sería incorporar el cargo mensual, modelar con escala logarítmica o acotar las estimaciones en cero.
 - **Prueba no totalmente externa.** El análisis exploratorio se hizo sobre la muestra completa, aunque el preprocesamiento y el modelo se ajustaron solo con entrenamiento.
 - **Variables redundantes.** Las variables de facturación calculadas son combinaciones de otras y limitan la lectura individual de los coeficientes. El cargo acumulado de 11 clientes se imputó con cero, bajo una suposición documentada.
 - **Sin costos.** No se dispone del costo de retención ni del valor de un cliente, por lo que no se estimó rentabilidad.

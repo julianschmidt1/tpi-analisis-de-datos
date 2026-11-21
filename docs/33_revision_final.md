@@ -37,3 +37,11 @@ Los notebooks de trabajo, los textos fuente, los scripts que regeneran el inform
 - Informe publicado — https://github.com/julianschmidt1/tpi-analisis-de-datos/blob/main/docs/INFORME_EJECUTIVO.pdf
 
 **Estado** — revisión del repositorio realizada con los pendientes anteriores. La tarea 33 conserva su casilla abierta hasta verificar la consigna y la entrega en el campus.
+
+## Actualización · comparación con la consigna del recuperatorio
+
+Se comparó el texto completo de la consigna del recuperatorio con el de la consigna original. Cambia en tres puntos: se completa el campo de división (343), **se elimina el modelo de clasificación** del apartado de modelado y la rúbrica de "Modelado y Evaluación" pasa a evaluar solo modelos de regresión. La estructura del repositorio, el resto de los requisitos, los pesos de la rúbrica y la regla de entrega no cambian.
+
+Decisión del grupo: conservar el modelo de clasificación (tareas 26 a 28) porque ya estaba desarrollado, aclararlo en el README, el informe y los notebooks, y reforzar la regresión lineal con un diagnóstico de errores (tarea 25).
+
+Puntos de la comparación con la consigna que siguen abiertos: la estructura "estricta" del repositorio frente a las carpetas adicionales y el renombrado de columnas del dataset, que hoy solo aparece en tablas de resumen.
