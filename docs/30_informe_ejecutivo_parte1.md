@@ -58,6 +58,7 @@ El EDA caracteriza la muestra completa y no constituye una evaluación predictiv
 | 11 cargos acumulados vacíos (0,16 %) | Se imputaron con `0.0` exclusivamente cuando `tenure = 0`. Se conserva al cliente; el valor depende de la suposición de que aún no acumuló cargos. |
 | Tipos categóricos | Se definieron 17 variables categóricas; `SeniorCitizen` se representó como `No/Yes`. El formato CSV requiere restaurar el esquema al leer. |
 | Identificador | Se eliminó `customerID` luego de verificar que los 7.043 identificadores originales eran distintos. |
+| Renombrado de columnas | Se definió un diccionario de equivalencias con nombres en español sobre una copia del dataset limpio; el pipeline conserva los nombres originales para respetar los que cita la consigna y los CSV intermedios. Ver el diccionario en el Anexo. |
 | Variables calculadas | `ingreso_estimado = MonthlyCharges × tenure`; `diferencia_facturacion = TotalCharges − ingreso_estimado`. Son aproximaciones aritméticas, no ingresos ni ajustes contables verificados. |
 | Valores atípicos | Cero casos fuera de Q1 − 1,5 × IQR y Q3 + 1,5 × IQR en `tenure`, `MonthlyCharges` y `TotalCharges`. Se conservaron los valores. |
 | Perfiles repetidos | Hay 22 filas repetidas posteriores a la primera coincidencia al retirar el identificador. Corresponden a clientes distintos con igual perfil; se conservaron. |
