@@ -169,3 +169,30 @@ python docs/31_ensamblar_informe.py
 ```
 
 El script combina el resumen ejecutivo, la Parte I (`docs/30_informe_ejecutivo_parte1.md`) y esta Parte II, agrega la carátula y genera `docs/INFORME_EJECUTIVO.pdf` con Google Chrome o Microsoft Edge instalado.
+
+## 14. Anexo: diccionario de variables
+
+| Nombre original | Nombre en español | Tipo | Descripción |
+|---|---|---|---|
+| gender | genero | Categórica | Sexo del cliente (Female o Male) |
+| SeniorCitizen | adulto_mayor | Categórica | Si el cliente es adulto mayor (No o Yes) |
+| Partner | tiene_pareja | Categórica | Si el cliente tiene pareja |
+| Dependents | tiene_dependientes | Categórica | Si el cliente tiene personas a cargo |
+| tenure | antiguedad_meses | Numérica | Meses que el cliente lleva en la empresa |
+| PhoneService | servicio_telefonico | Categórica | Si contrató servicio telefónico |
+| MultipleLines | multiples_lineas | Categórica | Si tiene varias líneas telefónicas |
+| InternetService | servicio_internet | Categórica | Tipo de internet (DSL, Fiber optic o No) |
+| OnlineSecurity | seguridad_online | Categórica | Si contrató seguridad online |
+| OnlineBackup | respaldo_online | Categórica | Si contrató respaldo online |
+| DeviceProtection | proteccion_dispositivo | Categórica | Si contrató protección de dispositivos |
+| TechSupport | soporte_tecnico | Categórica | Si contrató soporte técnico |
+| StreamingTV | streaming_tv | Categórica | Si contrató streaming de televisión |
+| StreamingMovies | streaming_peliculas | Categórica | Si contrató streaming de películas |
+| Contract | tipo_contrato | Categórica | Tipo de contrato (Month-to-month, One year o Two year) |
+| PaperlessBilling | factura_electronica | Categórica | Si recibe factura electrónica |
+| PaymentMethod | metodo_pago | Categórica | Método de pago |
+| MonthlyCharges | cargo_mensual | Numérica | Cargo mensual |
+| TotalCharges | cargo_acumulado | Numérica | Cargo acumulado hasta la fecha |
+| Churn | baja | Categórica | Si el cliente se dio de baja (variable objetivo) |
+| ingreso_estimado | ingreso_estimado | Numérica | MonthlyCharges × tenure (columna calculada en esta tarea) |
+| diferencia_facturacion | diferencia_facturacion | Numérica | TotalCharges − ingreso_estimado (columna calculada en esta tarea) |
