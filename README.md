@@ -8,7 +8,7 @@
 
 Este trabajo analiza el abandono de clientes (*churn*) en **Telco Customer Churn**, un dataset obtenido de Kaggle con 7.043 clientes y 21 variables originales. Busca comprender cómo se relacionan el contrato, la antigüedad, los servicios y los cargos con las bajas registradas, para orientar el estudio de acciones de retención.
 
-Cada fila representa un cliente; la variable objetivo `Churn` indica baja (`Yes`) o permanencia (`No`). El trabajo incluye limpieza, análisis exploratorio, visualización, preprocesamiento, regresión lineal simple (`TotalCharges ~ tenure`) y clasificación mediante Regresión Logística.
+Cada fila representa un cliente; la variable objetivo `Churn` indica baja (`Yes`) o permanencia (`No`). El trabajo incluye limpieza, análisis exploratorio, visualización, preprocesamiento, regresión lineal simple (`TotalCharges ~ tenure`) y, como complemento, clasificación mediante Regresión Logística.
 
 ## Entregables
 
@@ -103,6 +103,8 @@ python docs/30_reproducir_eda.py
 ```
 
 ## Alcance y organización
+
+**Sobre la consigna del recuperatorio.** La consigna del recuperatorio solicita únicamente el modelo de regresión y evalúa el modelado sobre ese modelo. El modelo de clasificación (tareas 26 a 28) formaba parte de la consigna original y **se conservó porque ya estaba desarrollado**. La regresión lineal se trabaja con mayor detalle: justificación del algoritmo, comparación con una referencia, diagnóstico de residuos y análisis por tramos de antigüedad.
 
 Las diferencias entre segmentos describen asociaciones y no demuestran que una intervención reduzca las bajas. El dataset no permite validar un horizonte futuro de abandono ni calcular rentabilidad de campañas sin información adicional. El notebook interpreta los errores de clasificación y compara su exactitud con una línea base mayoritaria.
 

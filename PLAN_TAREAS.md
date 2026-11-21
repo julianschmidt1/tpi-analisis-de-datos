@@ -3,6 +3,8 @@
 **Dataset:** Telco Customer Churn (Kaggle) · **Entrega y defensa:** martes 24/11/2026 (Clase 15; la consigna y el aula dicen 23/11 20:30, confirmar la hora límite en el campus) · **Recuperatorio:** 1/12
 **Integrantes (3, aprobado por el docente):** Matías (**M**) · Julián (**J**) · Emmanuel (**E**)
 
+> **Actualización — consigna del recuperatorio.** La consigna del recuperatorio ya no pide el modelo de clasificación (tareas 26 a 28) y su rúbrica evalúa el modelado solo sobre regresión (tarea 25). Esas tareas se conservan porque ya estaban hechas, y se reforzó la regresión con un diagnóstico de errores. El resto de la consigna no cambia.
+
 > Cómo leer este documento: el TPI se divide en **piezas** (Setup, Fundamentos y limpieza, EDA, Visualización, Preprocesamiento, Modelado, Integración e informe, Defensa). Cada pieza es independiente de las demás gracias a **contratos de datos** (sección 2). Dentro de cada pieza, las tareas están repartidas entre los tres, y quien lleva la parte más pesada rota de pieza en pieza. Así los tres tocan todo el pipeline, que es lo que exige la defensa individual.
 
 ---
@@ -72,7 +74,7 @@ Estos acuerdos permiten que las piezas avancen en paralelo sin esperarse.
 1. **¿Qué hacer con las filas de `TotalCharges` vacío?** En la versión pública del dataset son pocas (alrededor de 11, de clientes con `tenure = 0`; verificar al cargarlo). Opciones: imputar con 0 o eliminarlas. Decide quien hace 6 y lo justifica por escrito.
 2. **`PaymentMethod`**: decisión implementada en la tarea 22: **One-Hot completo**, conservando cada método sin imponer un orden ni aprender agrupaciones a partir del objetivo. Ajuste solo con train. Incorporar esta justificación al informe; pendiente de revisión cruzada.
 3. **`Contract`**: Ordinal Encoding (`Month-to-month` < `One year` < `Two year`), con su fundamento teórico en el informe.
-4. **Modelo de clasificación único**: la consigna pide uno. Propuesta: Regresión Logística, por ser interpretable y por tener ya un ejemplo en Clase 7.
+4. **Modelo de clasificación único**: la consigna original pedía uno (la del recuperatorio ya no lo exige y se conservó porque ya estaba hecho). Propuesta: Regresión Logística, por ser interpretable y por tener ya un ejemplo en Clase 7.
 5. **Variable de la regresión lineal**: la consigna sugiere `TotalCharges`. Propuesta: `TotalCharges ~ tenure` (simple, un solo predictor).
 6. **Notebooks de trabajo**: la consigna pide una estructura "estricta". Preguntarle al docente si se tolera `notebooks/trabajo/` en el repo final. Si no, se borra al terminar 29.
 7. **Hora límite exacta de la entrega** en el campus.
