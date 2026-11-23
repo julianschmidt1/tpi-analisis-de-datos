@@ -3,21 +3,57 @@
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/julianschmidt1/tpi-analisis-de-datos/blob/main/notebooks/TPI_Analisis_de_Datos.ipynb)
 
 **Introducción al Análisis de Datos · UTN Facultad Regional Avellaneda**
-**División 343 · Segundo cuatrimestre de 2026**
+**División 343**
 **Integrantes:** Matías, Julián y Emmanuel.
 
 Este trabajo analiza el abandono de clientes (*churn*) en **Telco Customer Churn**, un dataset obtenido de Kaggle con 7.043 clientes y 21 variables originales. Busca comprender cómo se relacionan el contrato, la antigüedad, los servicios y los cargos con las bajas registradas, para orientar el estudio de acciones de retención.
 
-Cada fila representa un cliente; la variable objetivo `Churn` indica baja (`Yes`) o permanencia (`No`). El trabajo incluye limpieza, análisis exploratorio, visualización, preprocesamiento, regresión lineal simple (`TotalCharges ~ tenure`) y, como complemento, clasificación mediante Regresión Logística.
+Cada fila representa un cliente; la variable objetivo `Churn` indica baja (`Yes`) o permanencia (`No`). El trabajo incluye limpieza, análisis exploratorio, visualización, preprocesamiento, regresión lineal simple (`TotalCharges ~ tenure`) y clasificación mediante Regresión Logística.
 
 ## Entregables
 
-| Recurso | Contenido y estado |
+| Recurso | Contenido |
 |---|---|
 | [Notebook integrado](notebooks/TPI_Analisis_de_Datos.ipynb) | Pipeline completo con explicaciones, gráficos y evaluación. Disponible en local y Colab. |
-| [Informe ejecutivo, parte 1](docs/30_informe_ejecutivo_parte1.md) | Carátula, resumen ejecutivo, problema, metodología, limpieza y EDA sobre datos limpios. |
-| [Informe ejecutivo final](docs/INFORME_EJECUTIVO.pdf) | PDF de 18 páginas con ambas partes, modelos y conclusiones. |
-| [Plan de tareas](PLAN_TAREAS.md) | Responsabilidades, contratos de datos y reglas de revisión. |
+| [Informe ejecutivo](docs/INFORME_EJECUTIVO.pdf) | PDF de 19 páginas con ambas partes, modelos y conclusiones. |
+
+## División de tareas
+
+| Tarea | Descripción | Realizó |
+|---|---|---|
+| 1 | Creación del repositorio | Julián |
+| 2 | Estructura inicial del repositorio y dataset original | Emmanuel |
+| 3 | Plantilla de notebook con Colab y dataset provisorio | Matías |
+| 4 | Problema de negocio e hipótesis analíticas | Matías |
+| 5 | Relevamiento de variables: tipo teórico frente al `dtype` de Pandas | Emmanuel |
+| 6 | Inspección y limpieza de `TotalCharges` | Julián |
+| 7 | Tipos de datos, columnas calculadas y renombrado de columnas | Matías |
+| 8 | Detección de valores atípicos con IQR | Julián |
+| 9 | Revisión de calidad y dataset limpio final | Emmanuel |
+| 10 | Estadística descriptiva de antigüedad y cargos | Julián |
+| 11 | Correlaciones de Pearson y Spearman | Julián |
+| 12 | Análisis categórico de la baja de clientes | Julián |
+| 13 | Filtrado avanzado de clientes | Julián |
+| 14 | Segmentación de clientes con `groupby` | Julián |
+| 15 | Hallazgos del análisis exploratorio | Julián |
+| 16 | Estilo común y exportación de gráficos | Matías |
+| 17 | Histogramas con KDE de antigüedad y cargo mensual | Emmanuel |
+| 18 | Mapa de calor de la correlación de Pearson | Julián |
+| 19 | Tasa de baja por contrato y método de pago | Julián |
+| 20 | Unificación y revisión de los gráficos | Julián |
+| 21 | Partición de datos y codificación del objetivo | Matías |
+| 22 | Codificación de variables categóricas | Matías |
+| 23 | Escalado e integración del preprocesamiento | Matías |
+| 24 | Verificación de ausencia de fuga de datos | Matías |
+| 25 | Regresión lineal del cargo acumulado y su diagnóstico | Julián y Emmanuel |
+| 26 | Modelo de clasificación: regresión logística | Emmanuel |
+| 27 | Evaluación de la clasificación | Matías |
+| 28 | Interpretación de los coeficientes del modelo | Emmanuel |
+| 29 | Integración del notebook completo | Julián |
+| 30 | Informe ejecutivo, parte 1 | Matías |
+| 31 | Informe ejecutivo, parte 2 y PDF final | Emmanuel |
+| 32 | README | Matías |
+| 33 | Revisión final del repositorio | Julián |
 
 ## Ejecutar en Google Colab
 
@@ -53,7 +89,7 @@ jupyter lab
 
 Abrir `notebooks/TPI_Analisis_de_Datos.ipynb`, reiniciar el kernel y ejecutar todas las celdas en orden. El notebook utiliza el CSV original incluido en el repositorio y regenera las salidas. Las rutas se resuelven desde el directorio de ejecución o sus padres; las exportaciones pueden sobrescribir archivos generados de ejecuciones anteriores.
 
-Los notebooks de `notebooks/trabajo/` conservan el desarrollo por tarea y pueden requerir salidas previas, según sus instrucciones. Para reproducir el flujo completo, usar el notebook integrado.
+Los notebooks de `notebooks/trabajo/` contienen el desarrollo de cada tarea. Para reproducir el flujo completo, usar el notebook integrado.
 
 ## Stack
 
@@ -79,15 +115,16 @@ Las dependencias están en [requirements.txt](requirements.txt). No se fijan ver
 ├── notebooks/
 │   ├── TPI_Analisis_de_Datos.ipynb # Notebook integrado
 │   └── trabajo/                   # Desarrollo individual por tarea
-├── docs/                          # Hallazgos y texto fuente del informe
+├── docs/                          # Informe, textos fuente y scripts para regenerarlo
 │   ├── 30_informe_ejecutivo_parte1.md
+│   ├── 31_informe_ejecutivo_parte2.md
+│   ├── 31_resumen_ejecutivo.md
 │   ├── 30_reproducir_eda.py        # Regenera evidencia de la parte 1
 │   ├── 31_ensamblar_informe.py     # Genera el PDF final
 │   └── INFORME_EJECUTIVO.pdf      # Informe ejecutivo completo
 ├── reports/
 │   ├── figures/                   # Gráficos exportados en PNG
 │   └── tables/                    # Tablas del informe en CSV
-├── PLAN_TAREAS.md
 ├── README.md
 └── requirements.txt
 ```
@@ -102,10 +139,8 @@ Para regenerar únicamente las tablas y figuras de la primera parte del informe,
 python docs/30_reproducir_eda.py
 ```
 
-## Alcance y organización
+Para regenerar el informe en PDF (requiere `markdown`, incluido en `requirements.txt`, y Google Chrome o Microsoft Edge):
 
-**Sobre la consigna del recuperatorio.** La consigna del recuperatorio solicita únicamente el modelo de regresión y evalúa el modelado sobre ese modelo. El modelo de clasificación (tareas 26 a 28) formaba parte de la consigna original y **se conservó porque ya estaba desarrollado**. La regresión lineal se trabaja con mayor detalle: justificación del algoritmo, comparación con una referencia, diagnóstico de residuos y análisis por tramos de antigüedad.
-
-Las diferencias entre segmentos describen asociaciones y no demuestran que una intervención reduzca las bajas. El dataset no permite validar un horizonte futuro de abandono ni calcular rentabilidad de campañas sin información adicional. El notebook interpreta los errores de clasificación y compara su exactitud con una línea base mayoritaria.
-
-Se trabaja en una rama por tarea. `main` se actualiza mediante Pull Request con revisión cruzada, según el [plan](PLAN_TAREAS.md).
+```bash
+python docs/31_ensamblar_informe.py
+```

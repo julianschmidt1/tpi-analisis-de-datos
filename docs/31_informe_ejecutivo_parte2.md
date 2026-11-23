@@ -2,7 +2,7 @@
 
 ## 7. Visualización de la cartera
 
-Las figuras de esta sección usan el dataset limpio (7.043 clientes) y el estilo común definido en la tarea 16. Cada una se acompaña de una lectura orientada al negocio. Las tasas se calculan dentro de cada grupo, como en la Parte I.
+Las figuras de esta sección usan el dataset limpio (7.043 clientes) y el estilo común de los gráficos. Cada una se acompaña de una lectura orientada al negocio. Las tasas se calculan dentro de cada grupo, como en la Parte I.
 
 ### 7.1. Antigüedad y cargo mensual
 
@@ -49,17 +49,16 @@ Antes de entrenar un modelo, los datos se transforman a un formato numérico y s
 
 **Tabla 5.** Resumen del preprocesamiento. Resultado: 46 variables predictoras por cliente.
 
-La tarea 24 verificó el orden de las operaciones: ningún ajuste (`fit`) recibió datos de prueba, no hay clientes compartidos entre ambos conjuntos y `Churn` no se filtra a los predictores. Esa revisión tiene un límite que debe declararse: el análisis exploratorio de la Parte I se calculó sobre la muestra completa, por lo que el conjunto de prueba no es una muestra totalmente externa. Las decisiones de modelado no se tomaron mirando los resultados de prueba.
+Una revisión específica del preprocesamiento verificó el orden de las operaciones: ningún ajuste (`fit`) recibió datos de prueba, no hay clientes compartidos entre ambos conjuntos y `Churn` no se filtra a los predictores. Esa revisión tiene un límite que debe declararse: el análisis exploratorio de la Parte I se calculó sobre la muestra completa, por lo que el conjunto de prueba no es una muestra totalmente externa. Las decisiones de modelado no se tomaron mirando los resultados de prueba.
 
 ## 9. Modelos y evaluación
 
 Se entrenaron dos modelos con objetivos distintos: uno que estima un número (regresión) y otro que predice una categoría (clasificación).
 
-**Nota sobre el alcance.** La consigna del recuperatorio solicita únicamente el modelo de regresión, y su rúbrica evalúa el modelado sobre ese modelo. El modelo de clasificación formaba parte de la consigna original y **se decidió conservarlo porque ya estaba desarrollado y verificado**. Por eso la sección 9.1 desarrolla la regresión con mayor detalle y la sección 9.2, junto con la 10, se presenta como complemento.
 
 ### 9.1. Regresión lineal simple: estimar el cargo acumulado
 
-**Objetivo:** estimar `TotalCharges` a partir de la antigüedad (`tenure`). Es el modelo central de esta parte del informe.
+**Objetivo:** estimar `TotalCharges` a partir de la antigüedad (`tenure`).
 
 **Decisiones de diseño.** El predictor es la antigüedad en meses, sin estandarizar: en una regresión con un solo predictor la estandarización no cambia las predicciones ni las métricas, solo la escala del coeficiente, y de este modo la pendiente conserva su significado en unidades monetarias por mes. La partición 80/20 se hizo **antes** de ajustar y el modelo se ajustó únicamente con el 80 % de los clientes (semilla 42), para prevenir la fuga de datos. No se usaron `ingreso_estimado` ni `diferencia_facturacion` como predictores, porque se calculan a partir del propio cargo acumulado y filtrarían información del objetivo.
 
@@ -85,7 +84,7 @@ Se entrenaron dos modelos con objetivos distintos: uno que estima un número (re
 
 **Objetivo:** predecir si un cliente se va (`Churn = 1`) o se queda (`Churn = 0`).
 
-**Por qué este modelo.** El objetivo es binario; el modelo devuelve una probabilidad de baja, y no solo una etiqueta; sus coeficientes se pueden interpretar; y es sensible a la escala, razón por la cual se estandarizaron las variables numéricas. Se entrenó un único modelo de clasificación elemental, que la consigna original incluía y la del recuperatorio ya no exige. Se entrenó con 5.634 clientes y 46 variables, con una iteración máxima de 1.000 y la semilla 42; el ajuste convergió en 40 iteraciones. La probabilidad se convierte en predicción con el umbral habitual de 0,5.
+**Por qué este modelo.** El objetivo es binario; el modelo devuelve una probabilidad de baja, y no solo una etiqueta; sus coeficientes se pueden interpretar; y es sensible a la escala, razón por la cual se estandarizaron las variables numéricas. Se entrenó un único modelo de clasificación elemental con 5.634 clientes y 46 variables, con una iteración máxima de 1.000 y la semilla 42; el ajuste convergió en 40 iteraciones. La probabilidad se convierte en predicción con el umbral habitual de 0,5.
 
 **Referencia de comparación.** Como la mayoría de los clientes permanece (73,5 % en la prueba), un “modelo” que siempre responda “se queda” acertaría ese porcentaje sin detectar ninguna baja. La exactitud del modelo solo tiene valor si supera esa línea base.
 
@@ -112,7 +111,7 @@ Se entrenaron dos modelos con objetivos distintos: uno que estima un número (re
 
 ## 10. Qué factores empujan hacia la baja
 
-Los coeficientes del modelo permiten ver qué características se asocian con una mayor o menor probabilidad de baja. Leerlos directamente induce a error por dos motivos que se verificaron en la tarea 28: siete columnas del modelo representan la misma información (“el cliente no tiene internet”) y el modelo reparte entre ellas el efecto, y las variables de facturación (`TotalCharges`, `ingreso_estimado` y `diferencia_facturacion`) son combinaciones exactas entre sí, de modo que sus coeficientes individuales no son confiables. Por eso se tradujo el efecto de cada característica a **probabilidad media de baja**: se fijó la característica en todos los clientes de entrenamiento, dejando lo demás igual, y se calculó lo que predice el modelo.
+Los coeficientes del modelo permiten ver qué características se asocian con una mayor o menor probabilidad de baja. Leerlos directamente induce a error por dos motivos que se verificaron al interpretar el modelo: siete columnas del modelo representan la misma información (“el cliente no tiene internet”) y el modelo reparte entre ellas el efecto, y las variables de facturación (`TotalCharges`, `ingreso_estimado` y `diferencia_facturacion`) son combinaciones exactas entre sí, de modo que sus coeficientes individuales no son confiables. Por eso se tradujo el efecto de cada característica a **probabilidad media de baja**: se fijó la característica en todos los clientes de entrenamiento, dejando lo demás igual, y se calculó lo que predice el modelo.
 
 ![Probabilidad de baja según la característica del cliente](../reports/figures/28_efecto_variables.png)
 
@@ -128,7 +127,7 @@ Los coeficientes del modelo permiten ver qué características se asocian con un
 
 **Tabla 9.** Variables con efecto más claro. La solidez se evaluó reentrenando el modelo sin las variables de facturación calculadas: antigüedad, contrato y fibra óptica casi no cambian.
 
-Dos observaciones de lectura. Primero, el efecto del cheque electrónico en el modelo (unos 6 puntos porcentuales) es mucho menor que la diferencia observada en los datos crudos (45,29 % frente a 15,24 % y 16,71 % en los pagos automáticos): una vez que el modelo ya considera el contrato, la antigüedad y el servicio, queda poco de la diferencia atribuible solo al método de pago. Segundo, el cargo mensual aparece con signo negativo en el modelo aunque quienes se van pagan más; ocurre porque el cargo alto se refleja a través del tipo de servicio (la fibra óptica, que es más cara) y el modelo no le suma efecto propio. Por eso el cargo mensual no debe interpretarse de manera aislada.
+Primero, el efecto del cheque electrónico en el modelo (unos 6 puntos porcentuales) es mucho menor que la diferencia observada en los datos crudos (45,29 % frente a 15,24 % y 16,71 % en los pagos automáticos): una vez que el modelo ya considera el contrato, la antigüedad y el servicio, queda poco de la diferencia atribuible solo al método de pago. Segundo, el cargo mensual aparece con signo negativo en el modelo aunque quienes se van pagan más; ocurre porque el cargo alto se refleja a través del tipo de servicio (la fibra óptica, que es más cara) y el modelo no le suma efecto propio. Por eso el cargo mensual no debe interpretarse de manera aislada.
 
 ## 11. Conclusiones estratégicas
 
@@ -154,7 +153,7 @@ La evidencia de las dos partes del informe señala dónde conviene concentrar la
 
 **Próximos pasos posibles:** incorporar datos fechados, evaluar el umbral con validación cruzada dentro del entrenamiento, comparar con otros modelos y estimar los costos reales de cada tipo de error.
 
-## 13. Fuentes internas y reproducción
+## 13. Fuentes y código
 
 El dataset original es `data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv` y todo el análisis de esta parte usa `data/processed/telco_clean.csv` y los conjuntos derivados de la partición. El código está en `notebooks/trabajo/`, con un notebook por tarea:
 
@@ -162,13 +161,7 @@ El dataset original es `data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv` y todo el
 - Preprocesamiento: tareas 21 a 24 (`21_particion_datos`, `22_codificacion`, `23_escalado`, `24_verificacion_antileakage`).
 - Modelado: tareas 25 a 28 (`25_regresion_lineal`, `26_regresion_logistica`, `27_evaluacion_clasificacion`, `28_interpretacion_coeficientes`).
 
-Las figuras están en `reports/figures/`. Para regenerar este documento en PDF, instalar `markdown` (`pip install markdown`) y ejecutar desde la raíz del repositorio:
-
-```console
-python docs/31_ensamblar_informe.py
-```
-
-El script combina el resumen ejecutivo, la Parte I (`docs/30_informe_ejecutivo_parte1.md`) y esta Parte II, agrega la carátula y genera `docs/INFORME_EJECUTIVO.pdf` con Google Chrome o Microsoft Edge instalado.
+Las figuras están en `reports/figures/`.
 
 ## 14. Anexo: diccionario de variables
 

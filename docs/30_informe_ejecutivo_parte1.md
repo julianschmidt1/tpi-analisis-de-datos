@@ -10,9 +10,6 @@
 | Integrantes | Matías, Julián y Emmanuel |
 | Fecha de elaboración | 18 de noviembre de 2026 |
 | Dataset | Telco Customer Churn · Kaggle |
-| Responsable de esta parte | Matías · Tarea 30 |
-
-Esta parte constituye el texto fuente para el informe conjunto. La tarea 31 incorporará visualización, preprocesamiento, modelos, métricas y conclusiones estratégicas, y ensamblará el PDF con numeración. Los nombres se presentan tal como figuran en el repositorio.
 
 ## 1. Resumen ejecutivo
 
@@ -30,7 +27,7 @@ La baja de clientes reduce los pagos futuros que puede percibir una empresa de t
 
 **Pregunta de negocio:** ¿cómo se relacionan la modalidad de contrato, la antigüedad y el cargo mensual con el abandono registrado en Telco Customer Churn?
 
-El objetivo general es analizar los factores asociados al abandono y preparar una base reproducible para clasificar la etiqueta disponible. Los objetivos específicos son comparar tasas entre segmentos, evaluar las tres hipótesis definidas en la tarea 4 y aportar evidencia para orientar futuras acciones de retención.
+El objetivo general es analizar los factores asociados al abandono y preparar una base reproducible para clasificar la etiqueta disponible. Los objetivos específicos son comparar tasas entre segmentos, evaluar las tres hipótesis planteadas al inicio y aportar evidencia para orientar futuras acciones de retención.
 
 La unidad de análisis es un cliente. La variable objetivo, `Churn`, es cualitativa nominal binaria: `Yes` indica una baja registrada y `No`, permanencia registrada. En esta parte se conserva ese texto. La tasa de abandono de un segmento se calcula como bajas del segmento divididas por sus clientes, multiplicadas por 100. Esto distingue una alta proporción de bajas de un simple volumen grande de clientes.
 
@@ -48,7 +45,7 @@ El trabajo siguió esta secuencia:
 
 La estadística descriptiva utiliza los 7.043 registros. El desvío estándar es muestral; la curtosis se expresa como exceso de Fisher. Pearson resume asociación lineal y Spearman, asociación entre rangos. Las diferencias entre tasas se expresan en puntos porcentuales. No se realizaron pruebas de significación para las hipótesis de este informe.
 
-El EDA caracteriza la muestra completa y no constituye una evaluación predictiva independiente. En las tareas posteriores se separan train y test antes de ajustar transformaciones; los ajustes del preprocesamiento y del modelo se realizan con entrenamiento. Si se usan estos hallazgos para elegir modelos o variables, esa elección debe validarse dentro de train. El detalle del flujo y sus controles corresponde a la segunda parte.
+El EDA caracteriza la muestra completa y no constituye una evaluación predictiva independiente. En las etapas posteriores se separan train y test antes de ajustar transformaciones; los ajustes del preprocesamiento y del modelo se realizan con entrenamiento. Si se usan estos hallazgos para elegir modelos o variables, esa elección debe validarse dentro de train. El detalle del flujo y sus controles corresponde a la segunda parte.
 
 ## 4. Limpieza y calidad
 
@@ -58,13 +55,13 @@ El EDA caracteriza la muestra completa y no constituye una evaluación predictiv
 | 11 cargos acumulados vacíos (0,16 %) | Se imputaron con `0.0` exclusivamente cuando `tenure = 0`. Se conserva al cliente; el valor depende de la suposición de que aún no acumuló cargos. |
 | Tipos categóricos | Se definieron 17 variables categóricas; `SeniorCitizen` se representó como `No/Yes`. El formato CSV requiere restaurar el esquema al leer. |
 | Identificador | Se eliminó `customerID` luego de verificar que los 7.043 identificadores originales eran distintos. |
-| Renombrado de columnas | Se definió un diccionario de equivalencias con nombres en español sobre una copia del dataset limpio; el pipeline conserva los nombres originales para respetar los que cita la consigna y los CSV intermedios. Ver el diccionario en el Anexo. |
+| Renombrado de columnas | Se definió un diccionario de equivalencias con nombres en español sobre una copia del dataset limpio; el pipeline conserva los nombres originales, que usan el análisis y los CSV intermedios. Ver el diccionario en el Anexo. |
 | Variables calculadas | `ingreso_estimado = MonthlyCharges × tenure`; `diferencia_facturacion = TotalCharges − ingreso_estimado`. Son aproximaciones aritméticas, no ingresos ni ajustes contables verificados. |
 | Valores atípicos | Cero casos fuera de Q1 − 1,5 × IQR y Q3 + 1,5 × IQR en `tenure`, `MonthlyCharges` y `TotalCharges`. Se conservaron los valores. |
 | Perfiles repetidos | Hay 22 filas repetidas posteriores a la primera coincidencia al retirar el identificador. Corresponden a clientes distintos con igual perfil; se conservaron. |
 | Exportación | Dataset final de 7.043 filas y 22 columnas: 17 categóricas y 5 numéricas, sin faltantes. |
 
-La tarea 9 documenta 16 controles de completitud, validez y consistencia, incluidos dominios permitidos y coherencia entre servicios. La ausencia de atípicos por IQR y de contradicciones en estos controles no garantiza que todo dato sea correcto: describe el alcance de las verificaciones aplicadas.
+Se aplicaron 16 controles de completitud, validez y consistencia, incluidos dominios permitidos y coherencia entre servicios. La ausencia de atípicos por IQR y de contradicciones en estos controles no garantiza que todo dato sea correcto: describe el alcance de las verificaciones aplicadas.
 
 ## 5. Análisis exploratorio
 
@@ -131,31 +128,27 @@ Los contratos mensuales concentran 1.655 de las 1.869 bajas (**88,55 % de las ba
 
 ### 5.4. Evaluación descriptiva de las hipótesis
 
-| Hipótesis de la tarea 4 | Evidencia en el dataset limpio | Resultado descriptivo |
+| Hipótesis | Evidencia en el dataset limpio | Resultado descriptivo |
 |---|---|---|
 | H1: contrato mensual con mayor abandono que contratos de uno y dos años | 42,71 % frente a 11,27 % y 2,83 % | Respaldada en la muestra. |
 | H2: hasta 12 meses con mayor abandono que más de 12 meses | 1.037/2.186 = 47,44 % frente a 832/4.857 = 17,13 %; diferencia de 30,31 puntos | Respaldada en la muestra. |
 | H3: cargo mensual superior a la mediana con mayor abandono | Mediana: 70,35. Por encima: 1.237/3.515 = 35,19 %; hasta la mediana: 632/3.528 = 17,91 %; diferencia de 17,28 puntos | Respaldada en la muestra. |
 
-**Tabla 4.** Se conservaron las definiciones de grupo de la tarea 4. El corte de cargo mensual se obtiene de la distribución de esa variable, sin buscar un umbral que maximice la diferencia de abandono. “Respaldada” describe el sentido observado de las tasas; no significa confirmación causal ni significación estadística.
+**Tabla 4.** Se conservaron las definiciones de grupo planteadas al inicio. El corte de cargo mensual se obtiene de la distribución de esa variable, sin buscar un umbral que maximice la diferencia de abandono. “Respaldada” describe el sentido observado de las tasas; no significa confirmación causal ni significación estadística.
 
 El primer año aparece como una etapa relevante para investigar la experiencia de incorporación. La asociación del cargo alto con mayor abandono requiere distinguir precio, servicios y contrato antes de plantear incentivos. Una lectura útil consiste en contrastar clientes comparables y medir cualquier intervención posterior.
 
-## 6. Límites y continuidad del informe
+## 6. Límites del análisis
 
 El dataset no aporta una secuencia fechada que permita validar un horizonte futuro de abandono ni verificar para todos los predictores su disponibilidad previa a la baja. Los resultados describen la etiqueta registrada. El traslado a una operación real requiere datos temporales y evaluación con clientes futuros.
 
 La imputación de cargos acumulados es una suposición documentada. Las variables calculadas derivan de cargos y antigüedad y pueden introducir redundancia; no representan información comercial independiente. Tampoco se dispone de costos de retención o de pérdida por cliente para estimar rentabilidad.
 
-La segunda parte incorporará las visualizaciones restantes, el preprocesamiento, la justificación de modelos, sus métricas y las conclusiones estratégicas. Las recomendaciones deberán distinguir una asociación descriptiva, la capacidad de clasificación y el efecto comprobado de una acción comercial.
-
 ## 7. Fuentes internas y reproducción
 
-La fuente primaria es el [CSV original](../data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv); las tablas y figuras de esta parte usan exclusivamente el [dataset limpio](../data/processed/telco_clean.csv). El [plan de tareas](../PLAN_TAREAS.md) establece alcance, contratos de datos y revisión cruzada.
+La fuente primaria es el [CSV original](../data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv); las tablas y figuras de esta parte usan exclusivamente el [dataset limpio](../data/processed/telco_clean.csv).
 
 La fundamentación proviene de la [tarea 4](../notebooks/trabajo/4_problema_hipotesis.ipynb). Las decisiones de limpieza y calidad están documentadas en las tareas [6](../notebooks/trabajo/6_totalcharges.ipynb), [7](../notebooks/trabajo/7_tipos_columnas.ipynb), [8](../notebooks/trabajo/8_outliers.ipynb) y [9](../notebooks/trabajo/9_dataset_limpio.ipynb). El EDA se desarrolla en las tareas [10](../notebooks/trabajo/10_estadistica_descriptiva.ipynb), [11](../notebooks/trabajo/11_correlaciones.ipynb), [12](../notebooks/trabajo/12_analisis_categorico.ipynb), [13](../notebooks/trabajo/13_filtrado_avanzado.ipynb) y [14](../notebooks/trabajo/14_segmentacion_groupby.ipynb).
-
-El resumen de la tarea 15 y algunas interpretaciones de los notebooks 10 y 11 conservan cifras provisorias. Este informe las actualiza: para `TotalCharges`, la media limpia es 2.279,73 y la mediana 1.394,55, sobre 7.043 clientes, en lugar de 2.283,30 y 1.397,48 sobre 7.032 valores disponibles. Las cifras provisorias no deben trasladarse al PDF final.
 
 Para regenerar la evidencia, instalar `requirements.txt` y ejecutar desde el repositorio:
 
@@ -163,4 +156,4 @@ Para regenerar la evidencia, instalar `requirements.txt` y ejecutar desde el rep
 python docs/30_reproducir_eda.py
 ```
 
-El script exporta tablas sin redondear a `reports/tables/30_*.csv` y las dos figuras a `reports/figures/30_*.png`, usando el estilo de la tarea 16. Las tablas del texto se redondean solo para presentación. La revisión cruzada de esta tarea corresponde a Emmanuel y queda pendiente antes del merge.
+El script exporta tablas sin redondear a `reports/tables/30_*.csv` y las dos figuras a `reports/figures/30_*.png`, usando el estilo común de los gráficos. Las tablas del texto se redondean solo para presentación.

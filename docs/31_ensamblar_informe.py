@@ -171,8 +171,28 @@ def construir_html():
 </body></html>"""
 
 
+def metadatos():
+    """Pone título y autores al PDF (Chrome deja su identificador como creador)."""
+    try:
+        import pymupdf
+    except ImportError:
+        return
+    temporal = SALIDA.with_suffix(".tmp")
+    with pymupdf.open(SALIDA) as doc:
+        doc.set_metadata({
+            "title": TITULO,
+            "author": ", ".join(INTEGRANTES),
+            "subject": "Introducción al Análisis de Datos · UTN FRA · División 343",
+            "creator": "",
+            "producer": "",
+        })
+        doc.save(temporal, garbage=3, deflate=True)
+    temporal.replace(SALIDA)
+
+
 def main():
     navegador = buscar_navegador()
+    SALIDA.unlink(missing_ok=True)  # si Chrome falla, no se da por bueno un PDF viejo
     with tempfile.TemporaryDirectory() as tmp:
         ruta_html = Path(tmp) / "informe.html"
         ruta_html.write_text(construir_html(), encoding="utf-8")
@@ -185,6 +205,7 @@ def main():
         resultado = subprocess.run(comando, capture_output=True, text=True, timeout=180)
     if not SALIDA.is_file() or SALIDA.stat().st_size == 0:
         sys.exit(f"No se generó el PDF.\n{resultado.stderr}")
+    metadatos()
     print(f"PDF generado: {SALIDA.relative_to(RAIZ)} ({SALIDA.stat().st_size / 1024:.0f} KB)")
 
 
